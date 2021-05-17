@@ -1,4 +1,5 @@
 const HttpError = require('../models/http-error');
+const User = require('../models/User');
 
 
 const signupUser = (req, res, next)=>{
@@ -7,9 +8,16 @@ const signupUser = (req, res, next)=>{
     const lastname = req.body.lastname;
     const email = req.body.email;
     const password = req.body.password;
-    const err = new HttpError('ridam',666)
-    throw err;
+    
 
+    const user =new User({name,lastname,email,password})
+    user.save().then(result=>{
+        console.log('user saved sucssesfuly')
+        res.json(result);
+    }).catch(err=>{
+        next(err);
+    })
+    
 
 }
 const loginUser = (req, res, next)=>{
