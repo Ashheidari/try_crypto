@@ -7,7 +7,7 @@ const signupUser = (req, res, next)=>{
     const validationErrors = validationResult(req);
     if(!validationErrors.isEmpty()){
         const error = new HttpError(validationErrors.errors[0].msg,422)
-        throw error
+        throw error;
     }
     const name = req.body.name;
     const lastname = req.body.lastname;
@@ -26,7 +26,11 @@ const signupUser = (req, res, next)=>{
 
 }
 const loginUser = (req, res, next)=>{
-
+    const validationErrors = validationResult(req);
+    if(!validationErrors.isEmpty()){
+        const error = new HttpError(validationErrors.errors[0].msg,422)
+        throw error;
+    }
 
 
 }
