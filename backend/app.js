@@ -2,6 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const userRouter = require("./routes/userRoute");
 const adminRouter = require("./routes/adminRoute");
+const HttpError = require('./models/http-error');
+
 
 const app = express();
 
@@ -10,6 +12,11 @@ app.use(express.json());
 app.use("/api/v1", userRouter);
 
 app.use("/api/v1/admin", adminRouter);
+
+app.use((req,res,next)=>{
+    const error = new HttpError('could not find this route',404);
+    throw error;
+})
 
 app.use((error, req, res, next) => {
     if (res.headerSent) {
