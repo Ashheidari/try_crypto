@@ -9,7 +9,7 @@ const subscSchema = new Schema({
     validateTo : {type:Date,required:true},
     dateUnsubscribe : {type:Date,required:true},
     plan:Plan,
-    userId : {type:Schema.Types.ObjectId,required:true},
+    userId : {type:Schema.Types.ObjectId,required:true, ref:'User'},
 
 
     
