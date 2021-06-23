@@ -41,7 +41,6 @@ const signupUser = async (req, res, next)=>{
     try {
         await createdUser.save()
     } catch (err) {
-        console.log(err)
         const error = new HttpError('signup failed, please try again', 500)
         return next(error)        
     }
@@ -58,13 +57,39 @@ const signupUser = async (req, res, next)=>{
     
 
 }
-const loginUser = (req, res, next)=>{
+const loginUser = async (req, res, next)=>{
     const validationErrors = validationResult(req);
     if(!validationErrors.isEmpty()){
         const error = new HttpError(validationErrors.errors[0].msg,422)
-        throw error;
+        return next(error)
     }
 
+    const email = req.body.email;
+    const password = req.body.password;
+    let existingUser;
+    try {
+        existingUser = await User.findOne({email:email});
+    } catch (err) {
+        const error = new HttpError('logining in failed, please try again.', 500)
+        return next(error);      
+    }
+    if(!existingUser){
+        const error = new HttpError('invalid credential, could not log you in.',403)
+        return next(error);
+    }
+    let isValidPassword = false;
+    try {
+        isValidPassword = await bcrypt.compare(password,existingUser.password);
+    } catch (err) {
+        const error = new HttpError('logining in failed, please try again.', 500)
+        return next(error);         
+    }
+    if (!isValidPassword){
+        const error = new HttpError('invalid credential, could not log you in.',403)
+        return next(error);       
+    }
+    res.status(200).json({userId:existingUser.id,email:existingUser.email,message:'user login successfuly'})
+    
 
 }
 const payUser = (req, res, next)=>{
