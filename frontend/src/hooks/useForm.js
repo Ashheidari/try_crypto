@@ -12,6 +12,8 @@ const useForm = (validator) => {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const [backendError, setBackendError] = useState()
+
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
     setValues({
@@ -21,7 +23,6 @@ const useForm = (validator) => {
   };
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    console.log(values);
     setErrors(validator(values));
     if (Object.keys(errors).length === 0) {
         try {
@@ -37,15 +38,27 @@ const useForm = (validator) => {
                  confirmpassword: values.confirmPassword,
                }),
              });
+            const responseData = await response.json();
+            //console.log(responseData)
+            if(!response.ok){
+              throw new Error(responseData.message);
+            }
+            //console.log(responseData)
             setIsLoading(false)
           } catch (err) {
-            console.log(err)
+          
+            setBackendError(err.message)
             setIsLoading(false)
+            
           }
     }
-  };
 
-  return { onChangeHandler, onSubmitHandler, values, errors,isLoading };
+  };
+  const errorHandler = ()=>{
+    setBackendError(null)
+  }
+
+  return { onChangeHandler, onSubmitHandler, values, errors,isLoading,backendError,errorHandler };
 };
 
 export default useForm;

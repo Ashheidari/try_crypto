@@ -13,6 +13,8 @@ import { ReactComponent as SignUpIcon } from "feather-icons/dist/icons/user-plus
 import useForm from "../hooks/useForm.js";
 import validator from '../util/FormValidator.js'
 import LoadingSpinner from '../components/misc/LoadingSpinner.js'
+import ErrorModal from "components/misc/ErrorModal.js";
+
 
 
 const Container = tw(
@@ -83,103 +85,106 @@ const SignUp = ({
     privacyPolicyUrl = "#",
     signInUrl = "/login",
 }) => {
-    const {onChangeHandler, onSubmitHandler,values,errors, isLoading} = useForm(validator);
+    const {onChangeHandler, onSubmitHandler,values,errors, isLoading,backendError,errorHandler} = useForm(validator);
 
     return (
-        <AnimationRevealPage>
-            <Container>
-                <Content>
-                    <MainContainer>
-                        <LogoLink href={logoLinkUrl}>
-                            <LogoImage src={logo} />
-                        </LogoLink>
-                        <MainContent>
-                            <Heading>{headingText}</Heading>
-                            <FormContainer>
-                                {isLoading && <LoadingSpinner asOverlay/>}
-                                <Form onSubmit={onSubmitHandler} >
-                                    <Input
-                                        type="text"
-                                        name="name"
-                                        placeholder="Name"
-                                        onChange={onChangeHandler}
-                                        value={values.name}
-                                    />
-                                    {errors.name && <Error>{errors.name}</Error>}
-                                    <Input
-                                        type="text"
-                                        name="lastname"
-                                        placeholder="Last Name"
-                                        onChange={onChangeHandler}
-                                        value={values.lastname}
-                                    />
-                                    {errors.lastname && <Error>{errors.lastname}</Error>}
-                                    <Input
-                                        type="email"
-                                        name="email"
-                                        placeholder="Email"
-                                        onChange={onChangeHandler}
-                                        value={values.email}
-                                    />
-                                    {errors.email && <Error>{errors.email}</Error>}
-                                    <Input
-                                        type="password"
-                                        name="password"
-                                        placeholder="Password"
-                                        onChange={onChangeHandler}
-                                        value={values.password}
-                                    />
-                                    {errors.password && <Error>{errors.password}</Error>}
-                                    <Input
-                                        type="password"
-                                        name="confirmPassword"
-                                        placeholder="Confirm Password"
-                                        onChange={onChangeHandler}
-                                        value={values.confirmPassword}
-                                    />
-                                    {errors.confirmPassword && <Error>{errors.confirmPassword}</Error>}
-                                    <SubmitButton type="submit">
-                                        <SubmitButtonIcon className="icon" />
-                                        <span className="text">
-                                            {submitButtonText}
-                                        </span>
-                                    </SubmitButton>
-                                    <p tw="mt-6 text-xs text-gray-600 text-center">
-                                        I agree to abide by trycrypto's{" "}
-                                        <a
-                                            href={tosUrl}
-                                            tw="border-b border-gray-500 border-dotted"
-                                        >
-                                            Terms of Service
-                                        </a>{" "}
-                                        and its{" "}
-                                        <a
-                                            href={privacyPolicyUrl}
-                                            tw="border-b border-gray-500 border-dotted"
-                                        >
-                                            Privacy Policy
-                                        </a>
-                                    </p>
+        <React.Fragment>
+            <ErrorModal error ={backendError} onClear={errorHandler}/>
+            <AnimationRevealPage>
+                <Container>
+                    <Content>
+                        <MainContainer>
+                            <LogoLink href={logoLinkUrl}>
+                                <LogoImage src={logo} />
+                            </LogoLink>
+                            <MainContent>
+                                <Heading>{headingText}</Heading>
+                                <FormContainer>
+                                    {isLoading && <LoadingSpinner asOverlay/>}
+                                    <Form onSubmit={onSubmitHandler} >
+                                        <Input
+                                            type="text"
+                                            name="name"
+                                            placeholder="Name"
+                                            onChange={onChangeHandler}
+                                            value={values.name}
+                                        />
+                                        {errors.name && <Error>{errors.name}</Error>}
+                                        <Input
+                                            type="text"
+                                            name="lastname"
+                                            placeholder="Last Name"
+                                            onChange={onChangeHandler}
+                                            value={values.lastname}
+                                        />
+                                        {errors.lastname && <Error>{errors.lastname}</Error>}
+                                        <Input
+                                            type="email"
+                                            name="email"
+                                            placeholder="Email"
+                                            onChange={onChangeHandler}
+                                            value={values.email}
+                                        />
+                                        {errors.email && <Error>{errors.email}</Error>}
+                                        <Input
+                                            type="password"
+                                            name="password"
+                                            placeholder="Password"
+                                            onChange={onChangeHandler}
+                                            value={values.password}
+                                        />
+                                        {errors.password && <Error>{errors.password}</Error>}
+                                        <Input
+                                            type="password"
+                                            name="confirmPassword"
+                                            placeholder="Confirm Password"
+                                            onChange={onChangeHandler}
+                                            value={values.confirmPassword}
+                                        />
+                                        {errors.confirmPassword && <Error>{errors.confirmPassword}</Error>}
+                                        <SubmitButton type="submit">
+                                            <SubmitButtonIcon className="icon" />
+                                            <span className="text">
+                                                {submitButtonText}
+                                            </span>
+                                        </SubmitButton>
+                                        <p tw="mt-6 text-xs text-gray-600 text-center">
+                                            I agree to abide by trycrypto's{" "}
+                                            <a
+                                                href={tosUrl}
+                                                tw="border-b border-gray-500 border-dotted"
+                                            >
+                                                Terms of Service
+                                            </a>{" "}
+                                            and its{" "}
+                                            <a
+                                                href={privacyPolicyUrl}
+                                                tw="border-b border-gray-500 border-dotted"
+                                            >
+                                                Privacy Policy
+                                            </a>
+                                        </p>
 
-                                    <p tw="mt-8 text-sm text-gray-600 text-center">
-                                        Already have an account?{" "}
-                                        <a
-                                            href={signInUrl}
-                                            tw="border-b border-gray-500 border-dotted"
-                                        >
-                                            Sign In
-                                        </a>
-                                    </p>
-                                </Form>
-                            </FormContainer>
-                        </MainContent>
-                    </MainContainer>
-                    <IllustrationContainer>
-                        <IllustrationImage imageSrc={illustrationImageSrc} />
-                    </IllustrationContainer>
-                </Content>
-            </Container>
-        </AnimationRevealPage>
+                                        <p tw="mt-8 text-sm text-gray-600 text-center">
+                                            Already have an account?{" "}
+                                            <a
+                                                href={signInUrl}
+                                                tw="border-b border-gray-500 border-dotted"
+                                            >
+                                                Sign In
+                                            </a>
+                                        </p>
+                                    </Form>
+                                </FormContainer>
+                            </MainContent>
+                        </MainContainer>
+                        <IllustrationContainer>
+                            <IllustrationImage imageSrc={illustrationImageSrc} />
+                        </IllustrationContainer>
+                    </Content>
+                </Container>
+            </AnimationRevealPage>
+        </React.Fragment>
     );
 };
 export default SignUp;

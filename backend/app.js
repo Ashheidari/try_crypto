@@ -40,7 +40,6 @@ app.use((error, req, res, next) => {
     next(error);
   }
   res.status(error.code || 500);
-  console.log(error)
   res.json({ message: error.message || "an unknown error occured" });
 });
 
