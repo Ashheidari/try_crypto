@@ -85,11 +85,12 @@ const SignUp = ({
     privacyPolicyUrl = "#",
     signInUrl = "/login",
 }) => {
-    const {onChangeHandler, onSubmitHandler,values,errors, isLoading,backendError,errorHandler} = useForm(validator);
+    const {onChangeHandler, onSubmitHandler,values,errors,isLoading,backendError,clearError} = useForm(validator);
+    
 
     return (
         <React.Fragment>
-            <ErrorModal error ={backendError} onClear={errorHandler}/>
+            <ErrorModal error ={backendError} onClear={clearError}/>
             <AnimationRevealPage>
                 <Container>
                     <Content>
